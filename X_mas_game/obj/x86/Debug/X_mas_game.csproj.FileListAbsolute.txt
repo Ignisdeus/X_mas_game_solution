@@ -1,0 +1,4 @@
+C:\Users\GD\Desktop\Mono Projects\X_mas_game_solution\X_mas_game\bin\Debug\X_mas_game.exe
+C:\Users\GD\Desktop\Mono Projects\X_mas_game_solution\X_mas_game\bin\Debug\X_mas_game.pdb
+C:\Users\GD\Desktop\Mono Projects\X_mas_game_solution\X_mas_game\obj\x86\Debug\X_mas_game.exe
+C:\Users\GD\Desktop\Mono Projects\X_mas_game_solution\X_mas_game\obj\x86\Debug\X_mas_game.pdb

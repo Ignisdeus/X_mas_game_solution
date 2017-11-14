@@ -1,0 +1,16 @@
+﻿<Properties StartupConfiguration="{0547CA41-462E-4058-A70A-48990539AC68}|Default">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="X_mas_game\EmptyClass.cs">
+    <Files>
+      <File FileName="X_mas_game\Program.cs" Line="32" Column="1" />
+      <File FileName="X_mas_game\Algarithims_ect.cs" Line="26" Column="17" />
+      <File FileName="X_mas_game\EmptyClass.cs" Line="4" Column="25" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.X__mas__game PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
