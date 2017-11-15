@@ -4,11 +4,11 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="X_mas_game\EmptyClass.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="X_mas_game\GameObjects.cs">
     <Files>
-      <File FileName="X_mas_game\Program.cs" Line="32" Column="1" />
-      <File FileName="X_mas_game\Algarithims_ect.cs" Line="26" Column="17" />
-      <File FileName="X_mas_game\EmptyClass.cs" Line="4" Column="25" />
+      <File FileName="X_mas_game\Program.cs" Line="58" Column="33" />
+      <File FileName="X_mas_game\Algarithims_ect.cs" Line="26" Column="1" />
+      <File FileName="X_mas_game\GameObjects.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MultiItemStartupConfigurations />

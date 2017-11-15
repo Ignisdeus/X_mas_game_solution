@@ -4,7 +4,7 @@ namespace X_mas_game
 	public class Human
 	{
 		private Vector2 myPos;
-		private byte hp = 10;
+		public byte hp = 10;
 		public static byte[] playerPos= new byte[2]; 
 
 		 
@@ -33,6 +33,13 @@ namespace X_mas_game
 			}
 		}
 
+		public void ChangePos(byte x, byte y){
+
+			myPos.x = x; 
+			myPos.y =y;
+
+		}
+
 
 
 	}
@@ -40,15 +47,29 @@ namespace X_mas_game
 
 	public class BadGuy : Human{
 
-		private string name = "John";
+		public string name = null;
 		private string type = null;
-		public string allyStatus = "unknown"; 
+		public string allyStatus = "unknown";
+		public string story= null;
 
 
-		public BadGuy(byte x, byte y): base(x,y){
+		public BadGuy(byte x, byte y, string myName, string myStory): base(x,y){
 
 			CallMyinfo();
+			name = myName;
+			story = myStory;
+			TypeSetup();
 
+
+		}
+
+		void TypeSetup(){
+
+			if(story == "Teaches under-privileged children in the hood." || story == "Pays child support for brothers child."){
+				type = "Friend";
+			}else{
+				type = "Enemy";
+			}
 		}
 
 		public string CallMyinfo(){
@@ -82,17 +103,32 @@ namespace X_mas_game
 
 		}
 
+		public string myAligenes{
+
+			get{
+
+				allyStatus = type; 
+				return(type);
+			}
+
+		}
+
 	}
 
 	public class Player : Human{
 
+		public string name = null;
 
+		public Player(byte x, byte y, string name):base(x,y){
 
-		public Player(byte x, byte y):base(x,y){
-
-			//playerCalulator();
+			this.name = name; 
 		}
 
+		//public void PlayerMove(byte x, byte y){
+
+
+
+		//}
 
 		public void playerCalulator(){
 

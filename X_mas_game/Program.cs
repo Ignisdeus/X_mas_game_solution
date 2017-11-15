@@ -23,41 +23,177 @@ namespace X_mas_game
 	{
 		public static void Main(string[] args)
 		{
-			
+			// random number genarator; 
+
 			// genarate the axis for game ( used as refrnce and can be changes as needed)
 			byte gridSize = 100;
+			// grid this way by not be needed 
 			byte[] xAxis = new byte[gridSize];
 			byte[] yAxis = new byte[gridSize];
 			xAxis = GridNumberAdd(gridSize);
 			yAxis = GridNumberAdd(gridSize);
-			Random rnd = new Random();
-			byte x = (byte)rnd.Next(0,100);
-			byte y = (byte)rnd.Next(0,100);
-			Player player = new Player(x,y);
-
-			player.CheckMyLoc();
+			//Player player = new Player();
+			//player.CheckMyLoc();
 			// make bad guys apear and store them in a list 
 			ArrayList badGuys = new ArrayList();
+			ArrayList storys = new ArrayList();
+			Player player = null; 
+			bool gameIsActive = true; 
+			bool playerIsActive = false;
+			byte badGuyCount = 0; 
 
-			for(int i =0 ; i < 5 ; i ++){
+			storys.Add("Eats the heads off bunny rabbits.  ");
+			storys.Add("Will kill his own grandmother for cash. ");
+			storys.Add("Teaches under-privileged children in the hood.");
+			storys.Add("Has killed more players than any other.");
+			storys.Add("Pays child support for brothers child.");
+			string input = null;
 
-				Random rnds = new Random();
-				byte x1 = (byte)rnd.Next(0,100);
-				byte y1 = (byte)rnd.Next(0,100);
-				badGuys.Add(new BadGuy(x1,y1));
+			while(gameIsActive){
+				
+			input= Console.ReadLine();
+
+				// create player 
+				if(input.ToLower() == "create player"){
+
+					if( !playerIsActive){
+						playerIsActive = true; 
+						// give the player a name
+						string nameToUse = null; 
+						Console.WriteLine("Please give your player a name");
+						nameToUse = Console.ReadLine();
+
+							// if name is not enterd try again 
+							while(string.IsNullOrEmpty(nameToUse)){
+							Console.WriteLine("That is not a valid name. \nPlease try again.");
+							nameToUse = Console.ReadLine();
+							}
+
+						player = CreatePlayer(nameToUse);
+						player.CheckMyLoc();
+						Console.WriteLine("Yours player name is " + player.name);
+
+					}else{
+
+							Console.WriteLine("Player is in game there name is " + player.name);
+						}
+
+				}
+				if(input.ToLower() == "create npc"){
+
+					if( badGuyCount < 5){
+						badGuyCount++;
+						string nameToUse = null; 
+						Console.WriteLine("Please give your NPC a name");
+						nameToUse = Console.ReadLine();
+
+					// if name is not enterd try again 
+							while(string.IsNullOrEmpty(nameToUse)){
+								Console.WriteLine("That is not a valid name. \nPlease try again.");
+								nameToUse = Console.ReadLine();
+							}
+						byte storyPicker = RandomNumberGen();
+						string storyToUse = storys[storyPicker].ToString();
+						badGuys.Add(CreateNPC(nameToUse, storyToUse));
+					}else{
+
+						Console.WriteLine("Can not Create any more NPC");
+					}
+				}
+				if(input.ToLower() == "query npc"){
+					
+						string nameToUse = null; 
+						Console.WriteLine("Please give the name of the NPC you would like to Query");
+						nameToUse = Console.ReadLine();
+
+					// if name is not enterd try again 
+						while(string.IsNullOrEmpty(nameToUse)){
+							Console.WriteLine("That is not a valid name. \nPlease try again.");
+							nameToUse = Console.ReadLine();
+						}
+
+					for(int i =0; i < badGuys.Count; i ++){
+						BadGuy c = (BadGuy)badGuys[i];
+						if((c.name).ToLower() == nameToUse.ToLower()){
+
+							Console.WriteLine("Name: " + c.name + "\nBackStory: " + c.story );
+						}
+
+					}
 
 			}
 
-			for(int i = 0; i < badGuys.Count; i ++){
+				if(input.ToLower() == "request alliance"){
 
-			
-				BadGuy target = (BadGuy)badGuys[i];
-				string inforToGet = target.AllMyinfo;
-				Console.WriteLine(inforToGet);
+					string nameToUse = null; 
+					Console.WriteLine("Please give the name of the NPC you would like to Query");
+					nameToUse = Console.ReadLine();
 
+					// if name is not enterd try again 
+					while(string.IsNullOrEmpty(nameToUse)){
+						Console.WriteLine("That is not a valid name. \nPlease try again.");
+						nameToUse = Console.ReadLine();
+					}
 
+					string allyStatus = null; 
+					for(int i =0; i < badGuys.Count; i ++){
+						BadGuy c = (BadGuy)badGuys[i];
 
+						if((c.name).ToLower() == nameToUse.ToLower()){
+
+							allyStatus = c.myAligenes;
+						}
+
+					}
+
+					if( allyStatus.ToLower() != "friend"){
+						player.hp -=2;
+						Console.WriteLine("You lost 2 hp your hp is now = " + player.hp);
+					}else{
+
+						Console.WriteLine("You found a friend");
+					}
+				}
+
+				if(input.ToLower() == "move"){
+					string xValue = null, yValue = null; 
+					byte xParse, yParse; 
+
+					Console.WriteLine();
+
+					Console.WriteLine("What x vaule would you like to move to? \nBetween 0 and 100 please.");
+					xValue= Console.ReadLine();
+					byte.TryParse(xValue, out xParse);
+
+					while(string.IsNullOrEmpty(xValue) || !byte.TryParse(xValue, out xParse) || xParse > 100){
+
+						Console.WriteLine("That is not a valid number \nPlease try again.");
+						xValue= Console.ReadLine();
+					}
+
+					Console.WriteLine("What y vaule would you like to move to? \nBetween 0 and 100 please.");
+					yValue= Console.ReadLine();
+					byte.TryParse(yValue, out xParse);
+
+					while(string.IsNullOrEmpty(yValue) || !byte.TryParse(yValue, out yParse) || yParse > 100){
+
+						Console.WriteLine("That is not a valid number \nPlease try again.");
+						yValue= Console.ReadLine();
+					}
+
+					player.ChangePos(xParse, yParse);
+
+					Console.WriteLine("I have moved to ");
+					player.CheckMyLoc();
+
+				}
 			}
+
+		
+
+
+
+			//badGuys.Add(new BadGuy(x,y,name,story));
 
 		}
 
@@ -73,6 +209,48 @@ namespace X_mas_game
 
 
 			return(gridReady);
+		}
+
+		public static Player CreatePlayer(string name){
+
+			byte[] xandY = RandomNumberGen(2);
+
+			Player player = new Player(xandY[0],xandY[1], name);
+
+			return(player);
+		}
+
+		public static BadGuy CreateNPC(string name, string story){
+
+			byte[] xandY = RandomNumberGen(2);
+
+			BadGuy badGuy = new BadGuy(xandY[0], xandY[1], name, story);
+
+			return(badGuy);
+		}
+
+		public static byte[] RandomNumberGen(byte numberOfNumberToReturn){
+
+			byte[] numbersToReturn = new byte[numberOfNumberToReturn];
+
+			Random rnd = new Random();
+
+			for( byte i = 0 ; i < numberOfNumberToReturn; i ++){
+				numbersToReturn[i] = (byte)rnd.Next(0,100);
+			}
+
+			return(numbersToReturn);
+		}
+		public static byte RandomNumberGen(){
+
+			byte numbersToReturn;
+
+			Random rnd = new Random();
+			numbersToReturn = (byte)rnd.Next(0,4);
+
+		
+
+			return(numbersToReturn);
 		}
 
 
