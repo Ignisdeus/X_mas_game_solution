@@ -23,7 +23,7 @@ namespace X_mas_game
 	{
 		public static void Main(string[] args)
 		{
-			// random number genarator; 
+			 
 
 			// genarate the axis for game ( used as refrnce and can be changes as needed)
 			byte gridSize = 100;
@@ -49,113 +49,129 @@ namespace X_mas_game
 			storys.Add("Pays child support for brothers child.");
 			string input = null;
 
-			while(gameIsActive){
-				
-			input= Console.ReadLine();
+            while (gameIsActive) {
 
-				// create player 
-				if(input.ToLower() == "create player"){
+                input = Console.ReadLine();
 
-					if( !playerIsActive){
-						playerIsActive = true; 
-						// give the player a name
-						string nameToUse = null; 
-						Console.WriteLine("Please give your player a name");
-						nameToUse = Console.ReadLine();
+                // create player 
+                if (input.ToLower() == "create player") {
 
-							// if name is not enterd try again 
-							while(string.IsNullOrEmpty(nameToUse)){
-							Console.WriteLine("That is not a valid name. \nPlease try again.");
-							nameToUse = Console.ReadLine();
-							}
+                    if (!playerIsActive) {
+                        playerIsActive = true;
+                        // give the player a name
+                        string nameToUse = null;
+                        Console.WriteLine("Please give your player a name");
+                        nameToUse = Console.ReadLine();
 
-						player = CreatePlayer(nameToUse);
-						player.CheckMyLoc();
-						Console.WriteLine("Yours player name is " + player.name);
+                        // if name is not enterd try again 
+                        while (string.IsNullOrEmpty(nameToUse)) {
+                            Console.WriteLine("That is not a valid name. \nPlease try again.");
+                            nameToUse = Console.ReadLine();
+                        }
 
-					}else{
+                        player = CreatePlayer(nameToUse);
+                        player.CheckMyLoc();
+                        Console.WriteLine("Yours player name is " + player.name);
 
-							Console.WriteLine("Player is in game there name is " + player.name);
-						}
+                    } else {
 
-				}
-				if(input.ToLower() == "create npc"){
+                        Console.WriteLine("Player is in game there name is " + player.name);
+                    }
 
-					if( badGuyCount < 5){
-						badGuyCount++;
-						string nameToUse = null; 
-						Console.WriteLine("Please give your NPC a name");
-						nameToUse = Console.ReadLine();
+                }
+                if (input.ToLower() == "create npc") {
 
-					// if name is not enterd try again 
-							while(string.IsNullOrEmpty(nameToUse)){
-								Console.WriteLine("That is not a valid name. \nPlease try again.");
-								nameToUse = Console.ReadLine();
-							}
-						byte storyPicker = RandomNumberGen();
-						string storyToUse = storys[storyPicker].ToString();
-						badGuys.Add(CreateNPC(nameToUse, storyToUse));
-					}else{
+                    if (badGuyCount < 5) {
+                        badGuyCount++;
+                        string nameToUse = null;
+                        Console.WriteLine("Please give your NPC a name");
+                        nameToUse = Console.ReadLine();
 
-						Console.WriteLine("Can not Create any more NPC");
-					}
-				}
-				if(input.ToLower() == "query npc"){
-					
-						string nameToUse = null; 
-						Console.WriteLine("Please give the name of the NPC you would like to Query");
-						nameToUse = Console.ReadLine();
+                        // if name is not enterd try again 
+                        while (string.IsNullOrEmpty(nameToUse)) {
+                            Console.WriteLine("That is not a valid name. \nPlease try again.");
+                            nameToUse = Console.ReadLine();
+                        }
+                        byte storyPicker = RandomNumberGen();
+                        string storyToUse = storys[storyPicker].ToString();
+                        badGuys.Add(CreateNPC(nameToUse, storyToUse));
+                    } else {
 
-					// if name is not enterd try again 
-						while(string.IsNullOrEmpty(nameToUse)){
-							Console.WriteLine("That is not a valid name. \nPlease try again.");
-							nameToUse = Console.ReadLine();
-						}
+                        Console.WriteLine("Can not Create any more NPC");
+                    }
+                }
+                if (input.ToLower() == "query npc" && playerIsActive) {
 
-					for(int i =0; i < badGuys.Count; i ++){
-						BadGuy c = (BadGuy)badGuys[i];
-						if((c.name).ToLower() == nameToUse.ToLower()){
+                    string nameToUse = null;
+                    Console.WriteLine("Please give the name of the NPC you would like to Query");
+                    nameToUse = Console.ReadLine();
 
-							Console.WriteLine("Name: " + c.name + "\nBackStory: " + c.story );
-						}
+                    // if name is not enterd try again 
+                    while (string.IsNullOrEmpty(nameToUse)) {
+                        Console.WriteLine("That is not a valid name. \nPlease try again.");
+                        nameToUse = Console.ReadLine();
+                    }
 
-					}
+                    for (int i = 0; i < badGuys.Count; i++) {
+                        BadGuy c = (BadGuy)badGuys[i];
+                        if ((c.name).ToLower() == nameToUse.ToLower()) {
 
-			}
+                            Console.WriteLine("Name: " + c.name + "\nBackStory: " + c.story);
+                        }
 
-				if(input.ToLower() == "request alliance"){
+                    }
 
-					string nameToUse = null; 
-					Console.WriteLine("Please give the name of the NPC you would like to Query");
-					nameToUse = Console.ReadLine();
+                } else if (input.ToLower() == "query npc" && !playerIsActive)
+                {
+                    Console.WriteLine("You need to make a player to do this");
 
-					// if name is not enterd try again 
-					while(string.IsNullOrEmpty(nameToUse)){
-						Console.WriteLine("That is not a valid name. \nPlease try again.");
-						nameToUse = Console.ReadLine();
-					}
+                }
 
-					string allyStatus = null; 
-					for(int i =0; i < badGuys.Count; i ++){
-						BadGuy c = (BadGuy)badGuys[i];
+                if (input.ToLower() == "request alliance" && playerIsActive)
+                {
 
-						if((c.name).ToLower() == nameToUse.ToLower()){
+                    string nameToUse = null;
+                    Console.WriteLine("Please give the name of the NPC you would like to Query");
+                    nameToUse = Console.ReadLine();
 
-							allyStatus = c.myAligenes;
-						}
+                    // if name is not enterd try again 
+                    while (string.IsNullOrEmpty(nameToUse))
+                    {
+                        Console.WriteLine("That is not a valid name. \nPlease try again.");
+                        nameToUse = Console.ReadLine();
+                    }
 
-					}
+                    string allyStatus = null;
+                    for (int i = 0; i < badGuys.Count; i++)
+                    {
+                        BadGuy c = (BadGuy)badGuys[i];
 
-					if( allyStatus.ToLower() != "friend"){
-						player.hp -=2;
-						Console.WriteLine("You lost 2 hp your hp is now = " + player.hp);
-					}else{
+                        if ((c.name).ToLower() == nameToUse.ToLower())
+                        {
 
-						Console.WriteLine("You found a friend");
-					}
-				}
+                            allyStatus = c.myAligenes;
+                        }
 
-				if(input.ToLower() == "move"){
+                        if (allyStatus.ToLower() != "friend")
+                        {
+                            player.hp -= 2;
+                            Console.WriteLine("You lost 2 hp your hp is now = " + player.hp);
+                        }
+                        else {
+
+                            Console.WriteLine("You found a friend");
+                        }
+
+                    }
+
+
+                   
+				}else if (input.ToLower() == "request alliance" && !playerIsActive)
+                {
+                    Console.WriteLine("You need to make a player to do this");
+                }
+
+				if(input.ToLower() == "move" && playerIsActive){
 					string xValue = null, yValue = null; 
 					byte xParse, yParse; 
 
@@ -186,8 +202,111 @@ namespace X_mas_game
 					Console.WriteLine("I have moved to ");
 					player.CheckMyLoc();
 
-				}
-			}
+				}else if (input.ToLower() == "move" && !playerIsActive)
+                {
+                    Console.WriteLine("You need to add a player to do this.");
+
+                }
+                if (input.ToLower() == "print npc status")
+                {
+
+                    for(int i =0; i < badGuys.Count; i++)
+                    {
+                        BadGuy badinfoToCall = (BadGuy)badGuys[i];
+
+                        string infoToOutput = badinfoToCall.CallMyinfo();
+                        Console.WriteLine(infoToOutput);
+                    }
+  
+
+                }
+
+                if (input.ToLower() == "print player status" && playerIsActive)
+                {
+                    string infoToget = player.PlayerInfo;
+                    Console.WriteLine(infoToget);
+                }else if (input.ToLower() == "print player status" && !playerIsActive)
+                {
+                    Console.WriteLine("You need to add a player to do this.");
+                }
+
+
+                if(input.ToLower() == "shoot" && playerIsActive && badGuyCount > 0)
+                {
+                    string nameToUse = null;
+                    Console.WriteLine("Please give the name of the NPC you would like to Shoot");
+                    nameToUse = Console.ReadLine();
+
+                    // if name is not enterd try again 
+                    while (string.IsNullOrEmpty(nameToUse))
+                    {
+                        Console.WriteLine("That is not a valid name. \nPlease try again.");
+                        nameToUse = Console.ReadLine();
+                    }
+                    bool ifIhitHim = false;
+                    string eminyStatus = null; 
+                    for( int i = 0; i < badGuys.Count; i++)
+                    {
+                        BadGuy c = (BadGuy)badGuys[i];
+                        if ((c.name).ToLower() == nameToUse.ToLower())
+                        {
+                            ifIhitHim = c.Shoot();
+                            eminyStatus = c.myType;
+                        }
+
+                    }
+
+                    if (ifIhitHim)
+                    {
+
+                        Console.WriteLine("You shot " + nameToUse);
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("You missed " + nameToUse);
+                    }
+                    if(eminyStatus.ToLower() == "friend")
+                    {
+                        player.HitFriend();
+
+                    }
+
+                }
+                else if (input.ToLower() == "shoot" && !playerIsActive && badGuyCount > 0) 
+                {
+                    Console.WriteLine("You need to make a player frist");
+
+                }else if (input.ToLower() == "shoot" && !playerIsActive && badGuyCount <= 0)
+                {
+                    Console.WriteLine("There is no body to shoot");
+                }
+
+                byte npcPasafied = 0; 
+
+                for(int i = 0; i < badGuys.Count; i++)
+                {
+
+                    BadGuy c = (BadGuy)badGuys[i];
+
+                    if( c.allyStatus == "friend" || c.hp <= 0)
+                    {
+                        npcPasafied++;
+
+                    }
+
+                }
+
+                if (playerIsActive)
+                {
+                    if (player.hp == 0 || npcPasafied == badGuys.Count)
+                    {
+                        gameIsActive = !gameIsActive;
+                    }
+                }
+            }
+
+            Console.WriteLine("Game over your score" + player.hp);
 
 		
 

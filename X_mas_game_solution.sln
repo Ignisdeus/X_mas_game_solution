@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X_mas_game", "X_mas_game\X_mas_game.csproj", "{0547CA41-462E-4058-A70A-48990539AC68}"
@@ -13,5 +13,35 @@ Global
 		{0547CA41-462E-4058-A70A-48990539AC68}.Debug|x86.Build.0 = Debug|x86
 		{0547CA41-462E-4058-A70A-48990539AC68}.Release|x86.ActiveCfg = Release|x86
 		{0547CA41-462E-4058-A70A-48990539AC68}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItems = $0
+		$0.Item = X_mas_game\X_mas_game.csproj
+		Policies = $1
+		$1.DotNetNamingPolicy = $2
+		$2.DirectoryNamespaceAssociation = None
+		$2.ResourceNamePolicy = FileFormatDefault
+		$1.TextStylePolicy = $3
+		$3.inheritsSet = null
+		$3.scope = text/x-csharp
+		$1.CSharpFormattingPolicy = $4
+		$4.ElseIfNewLinePlacement = SameLine
+		$4.AfterDelegateDeclarationParameterComma = True
+		$4.inheritsSet = Mono
+		$4.inheritsScope = text/x-csharp
+		$4.scope = text/x-csharp
+		$1.TextStylePolicy = $5
+		$5.FileWidth = 120
+		$5.TabsToSpaces = False
+		$5.inheritsSet = VisualStudio
+		$5.inheritsScope = text/plain
+		$5.scope = text/plain
+		$1.VersionControlPolicy = $6
+		$6.inheritsSet = Mono
+		$1.ChangeLogPolicy = $7
+		$7.UpdateMode = None
+		$7.MessageStyle = $8
+		$8.LineAlign = 0
+		$7.inheritsSet = Mono
 	EndGlobalSection
 EndGlobal

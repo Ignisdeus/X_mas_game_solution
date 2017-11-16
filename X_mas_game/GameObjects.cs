@@ -82,10 +82,20 @@ namespace X_mas_game
 
 
 		}
+        public string myType
+        {
+            get
+            {
+
+                return (type);
+            }
+
+        }
 
 		public string AllMyinfo{
-
-			get{
+            // health values, their allegiance status and their distance from the player.
+            get
+            {
 				string info= null;
 
 				info += "Name = " + name + " "; 
@@ -94,8 +104,7 @@ namespace X_mas_game
 				Vector2 myPosNow = new Vector2(myLoc[0], myLoc[1]);
 				Vector2 playerLoc = new Vector2(playerPos[0], playerPos[1]);
 				info += " Distance= " + Vector2Lyb.Distance(myPosNow.x, myPosNow.y, playerLoc.x,playerLoc.y) + " ";
-				// was a testing feature
-				//info += ""+ myPosNow.x + " " + myPosNow.y;
+
 
 				return (info);
 			}
@@ -113,11 +122,31 @@ namespace X_mas_game
 
 		}
 
+        public bool Shoot()
+        {
+            byte[] myLocGot = myLoc;
+
+            int distance = Vector2Lyb.Distance(playerPos[0], playerPos[1], myLocGot[0], myLocGot[1] );
+
+            if (distance <= 50)
+            {
+
+                hp--;
+                return (true);
+            }
+            else
+            {
+                return (false);
+            }
+
+        }
+
 	}
 
 	public class Player : Human{
 
 		public string name = null;
+        public byte amunition = 50; 
 
 		public Player(byte x, byte y, string name):base(x,y){
 
@@ -130,6 +159,25 @@ namespace X_mas_game
 
 		//}
 
+
+            public string PlayerInfo{
+           // health value, ammunition value and position.
+            get
+            {
+
+                string infoToRetun = null;
+
+                infoToRetun += "Player HP = " + hp + " ";
+                infoToRetun += "Player Ammo = " + amunition + " ";
+                infoToRetun += "Player position = " + playerPos[0] + " " + playerPos[1]; 
+
+
+
+                return (infoToRetun);
+            }
+
+
+            }
 		public void playerCalulator(){
 
 	
@@ -138,6 +186,13 @@ namespace X_mas_game
 
 
 		}
+
+        public void HitFriend(){
+
+            hp -= 2;
+            Console.WriteLine("I didn't mean to shoot them");
+
+            }
 		public void CheckMyLoc(){
 			playerCalulator();
 			Console.WriteLine(""+ playerPos[0] + ","+  playerPos[1]);
