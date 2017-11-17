@@ -26,12 +26,12 @@ namespace X_mas_game
 			 
 
 			// genarate the axis for game ( used as refrnce and can be changes as needed)
-			byte gridSize = 100;
+			//byte gridSize = 100;
 			// grid this way by not be needed 
-			byte[] xAxis = new byte[gridSize];
-			byte[] yAxis = new byte[gridSize];
-			xAxis = GridNumberAdd(gridSize);
-			yAxis = GridNumberAdd(gridSize);
+			//byte[] xAxis = new byte[gridSize];
+			//byte[] yAxis = new byte[gridSize];
+			//xAxis = GridNumberAdd(gridSize);
+			//yAxis = GridNumberAdd(gridSize);
 			//Player player = new Player();
 			//player.CheckMyLoc();
 			// make bad guys apear and store them in a list 
@@ -49,6 +49,9 @@ namespace X_mas_game
 			storys.Add("Pays child support for brothers child.");
 			string input = null;
 
+
+			Console.WriteLine ("Hello and Welcome to the game of the season");
+			Console.WriteLine ("If at any point you are unsure what to do type HELP in the console");
             while (gameIsActive) {
 
                 input = Console.ReadLine();
@@ -70,7 +73,7 @@ namespace X_mas_game
                         }
 
                         player = CreatePlayer(nameToUse);
-                        player.CheckMyLoc();
+                        //player.CheckMyLoc();
                         Console.WriteLine("Yours player name is " + player.name);
 
                     } else {
@@ -95,6 +98,7 @@ namespace X_mas_game
                         byte storyPicker = RandomNumberGen();
                         string storyToUse = storys[storyPicker].ToString();
                         badGuys.Add(CreateNPC(nameToUse, storyToUse));
+						Console.WriteLine (nameToUse + " Has been created");
                     } else {
 
                         Console.WriteLine("Can not Create any more NPC");
@@ -189,7 +193,7 @@ namespace X_mas_game
 
 					Console.WriteLine("What y vaule would you like to move to? \nBetween 0 and 100 please.");
 					yValue= Console.ReadLine();
-					byte.TryParse(yValue, out xParse);
+					byte.TryParse(yValue, out yParse);
 
 					while(string.IsNullOrEmpty(yValue) || !byte.TryParse(yValue, out yParse) || yParse > 100){
 
@@ -231,7 +235,7 @@ namespace X_mas_game
                 }
 
 
-                if(input.ToLower() == "shoot" && playerIsActive && badGuyCount > 0)
+				if(input.ToLower() == "shoot" && playerIsActive && badGuyCount > 0 && player.amunition > 0)
                 {
                     string nameToUse = null;
                     Console.WriteLine("Please give the name of the NPC you would like to Shoot");
@@ -243,28 +247,39 @@ namespace X_mas_game
                         Console.WriteLine("That is not a valid name. \nPlease try again.");
                         nameToUse = Console.ReadLine();
                     }
-                    bool ifIhitHim = false;
+					bool ifIhitHim = false, badGuyAlive = true;
                     string eminyStatus = null; 
                     for( int i = 0; i < badGuys.Count; i++)
                     {
                         BadGuy c = (BadGuy)badGuys[i];
                         if ((c.name).ToLower() == nameToUse.ToLower())
                         {
+							if(c.hp <=0){
+
+								badGuyAlive = false;
+
+							}
+							if(badGuyAlive){
+							player.ShotMyGun();
                             ifIhitHim = c.Shoot();
                             eminyStatus = c.myType;
+							}else{
+								Console.WriteLine ("I cant do that they are all ready dead");
+							}
+
                         }
 
                     }
 
-                    if (ifIhitHim)
+					if (ifIhitHim && badGuyAlive)
                     {
 
                         Console.WriteLine("You shot " + nameToUse);
 
                     }
-                    else
+					else if( !ifIhitHim && badGuyAlive)
                     {
-                        Console.WriteLine("You missed " + nameToUse);
+                        Console.WriteLine("You are to far away " + nameToUse);
                     }
                     if(eminyStatus.ToLower() == "friend")
                     {
@@ -273,14 +288,17 @@ namespace X_mas_game
                     }
 
                 }
-                else if (input.ToLower() == "shoot" && !playerIsActive && badGuyCount > 0) 
+				else if (input.ToLower() == "shoot" && !playerIsActive && badGuyCount > 0 && player.amunition > 0) 
                 {
                     Console.WriteLine("You need to make a player frist");
 
-                }else if (input.ToLower() == "shoot" && !playerIsActive && badGuyCount <= 0)
+				}else if (input.ToLower() == "shoot" && !playerIsActive && badGuyCount <= 0 && player.amunition > 0)
                 {
                     Console.WriteLine("There is no body to shoot");
-                }
+				}else if (input.ToLower() == "shoot" && playerIsActive && badGuyCount >= 0 && player.amunition <= 0)
+				{
+					Console.WriteLine("Im out of ammo");
+				}
 
                 byte npcPasafied = 0; 
 
@@ -297,7 +315,28 @@ namespace X_mas_game
 
                 }
 
-                if (playerIsActive)
+				if (input.ToLower() == "help" ){
+					Console.WriteLine ("Welcome to the help Center.  \nBelow are a list of avalable commands and that they do. ");
+					Console.WriteLine ("");
+					Console.WriteLine ("Create Player = When this command is called,\n you will be asked for name of the player.\nA player with a randomly generated position the 100 x 100 grid will be created.");
+					Console.WriteLine ("");
+					Console.WriteLine ("Create Npc = When this command is called,\n you will be asked for name of the NPC.\n A NPC with a randomly generated position the 100 x 100 grid will be created.");
+					Console.WriteLine ("");
+					Console.WriteLine ("Move = When this command is called,\n you will be asked for a new position, this will cost 1 hp to use.");
+					Console.WriteLine ("");
+					Console.WriteLine ("Query NPC = When this command is called,\n you will be asked for an NPC’s name and there back story will be revealed.");
+					Console.WriteLine ("");
+					Console.WriteLine ("Request Alliance = When this command is called,\n you will be asked for an NPC’s name. \n If they are friendly they will join your team,\n if not they may not be so welcoming");
+					Console.WriteLine ("");
+					Console.WriteLine ("Print Player Status = When this command is called,\n  the players hp ammo and posistion on the grid will be displayed");
+					Console.WriteLine ("");
+					Console.WriteLine ("Print NPC Status = When this command is called,\n All know info about the NPC's will be displayed");
+					Console.WriteLine ("");
+					Console.WriteLine ("Shoot = When this command is called,\n you will be asked for name of the NPC,\n If the NPC is in range you will shoot them.");
+
+				}
+
+				if (playerIsActive && badGuyCount > 0)
                 {
                     if (player.hp == 0 || npcPasafied == badGuys.Count)
                     {
@@ -306,7 +345,7 @@ namespace X_mas_game
                 }
             }
 
-            Console.WriteLine("Game over your score" + player.hp);
+            Console.WriteLine("Game over your score = " + player.hp);
 
 		
 

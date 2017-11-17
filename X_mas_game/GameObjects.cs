@@ -1,13 +1,17 @@
 ﻿using System;
 namespace X_mas_game
 {
+	// is the main class used in the game 
 	public class Human
 	{
+		// custom struct for pos.x and pos.y notations 
 		private Vector2 myPos;
+		// all hp is 10 
 		public byte hp = 10;
+		// the updateing posision of the player that is always knowen to all childern of this class 
 		public static byte[] playerPos= new byte[2]; 
 
-		 
+		 // constuctor 
 		public Human(byte x, byte y)
 		{
 			myPos = new Vector2(x,y);
@@ -18,12 +22,14 @@ namespace X_mas_game
 			hp--;
 		}
 
+		// gets info for ho 
 		public string hpLeft{
 
 			get{
 				return(""+hp);
 			}
 		}
+		// gets an array for the posisions on a grid 
 		public byte[] myLoc{
 
 			get{
@@ -32,11 +38,13 @@ namespace X_mas_game
 				return(loc);
 			}
 		}
-
+		// for the move of player (can be transfared to NPCs if needed)
 		public void ChangePos(byte x, byte y){
 
 			myPos.x = x; 
-			myPos.y =y;
+			myPos.y = y;
+			Console.WriteLine ("You have lost 1 hp");
+			hp--;
 
 		}
 
@@ -44,15 +52,18 @@ namespace X_mas_game
 
 	}
 
-
+	// badGuy extends Human
 	public class BadGuy : Human{
-
+		// name set by player 
 		public string name = null;
+		// type is always an unknown 
 		private string type = null;
+		// ally statis is unknown untill checked 
 		public string allyStatus = "unknown";
+		// story is randomly assigned 
 		public string story= null;
 
-
+		// constructor that also sends to super constructor(Constructor of the parent class (Human))
 		public BadGuy(byte x, byte y, string myName, string myStory): base(x,y){
 
 			CallMyinfo();
@@ -62,7 +73,7 @@ namespace X_mas_game
 
 
 		}
-
+		// checks to see if this guy is good or bad 
 		void TypeSetup(){
 
 			if(story == "Teaches under-privileged children in the hood." || story == "Pays child support for brothers child."){
@@ -71,7 +82,7 @@ namespace X_mas_game
 				type = "Enemy";
 			}
 		}
-
+		// gets info for NPC checks 
 		public string CallMyinfo(){
 
 
@@ -82,6 +93,7 @@ namespace X_mas_game
 
 
 		}
+		// get type for check 
         public string myType
         {
             get
@@ -91,7 +103,7 @@ namespace X_mas_game
             }
 
         }
-
+		// gets all info in a string 
 		public string AllMyinfo{
             // health values, their allegiance status and their distance from the player.
             get
@@ -111,7 +123,7 @@ namespace X_mas_game
 
 
 		}
-
+		// gets the allystatus of the NPC 
 		public string myAligenes{
 
 			get{
@@ -121,7 +133,7 @@ namespace X_mas_game
 			}
 
 		}
-
+		// if the shoot command is enters with my name check to see if I can be shot return info to and proced as expected 
         public bool Shoot()
         {
             byte[] myLocGot = myLoc;
@@ -142,10 +154,11 @@ namespace X_mas_game
         }
 
 	}
-
+	// same as Badguy 
 	public class Player : Human{
 
 		public string name = null;
+		// ammo left
         public byte amunition = 50; 
 
 		public Player(byte x, byte y, string name):base(x,y){
@@ -159,7 +172,7 @@ namespace X_mas_game
 
 		//}
 
-
+		// gets my into in a string 
             public string PlayerInfo{
            // health value, ammunition value and position.
             get
@@ -178,6 +191,7 @@ namespace X_mas_game
 
 
             }
+		// updateing position when i move 
 		public void playerCalulator(){
 
 	
@@ -186,13 +200,19 @@ namespace X_mas_game
 
 
 		}
+		// lowers ammo when I shoot
+		public void ShotMyGun(){
 
+			amunition --; 
+		}
+		// if I hit a friend lower my hp
         public void HitFriend(){
 
             hp -= 2;
             Console.WriteLine("I didn't mean to shoot them");
 
             }
+		// used for debugging 
 		public void CheckMyLoc(){
 			playerCalulator();
 			Console.WriteLine(""+ playerPos[0] + ","+  playerPos[1]);
