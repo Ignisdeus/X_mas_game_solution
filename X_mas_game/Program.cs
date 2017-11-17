@@ -41,7 +41,7 @@ namespace X_mas_game
 			bool gameIsActive = true; 
 			bool playerIsActive = false;
 			byte badGuyCount = 0; 
-
+			// storys for the NPC's back grounds stored in an array 
 			storys.Add("Eats the heads off bunny rabbits.  ");
 			storys.Add("Will kill his own grandmother for cash. ");
 			storys.Add("Teaches under-privileged children in the hood.");
@@ -49,9 +49,11 @@ namespace X_mas_game
 			storys.Add("Pays child support for brothers child.");
 			string input = null;
 
-
+			// start of game 
 			Console.WriteLine ("Hello and Welcome to the game of the season");
 			Console.WriteLine ("If at any point you are unsure what to do type HELP in the console");
+
+			// game active loop 
             while (gameIsActive) {
 
                 input = Console.ReadLine();
@@ -74,7 +76,7 @@ namespace X_mas_game
 
                         player = CreatePlayer(nameToUse);
                         //player.CheckMyLoc();
-                        Console.WriteLine("Yours player name is " + player.name);
+                        Console.WriteLine(player.name + "Has been created as the player");
 
                     } else {
 
@@ -82,6 +84,7 @@ namespace X_mas_game
                     }
 
                 }
+				// create npc 
                 if (input.ToLower() == "create npc") {
 
                     if (badGuyCount < 5) {
@@ -104,6 +107,7 @@ namespace X_mas_game
                         Console.WriteLine("Can not Create any more NPC");
                     }
                 }
+				// Npc info request (Single) 
                 if (input.ToLower() == "query npc" && playerIsActive) {
 
                     string nameToUse = null;
@@ -130,7 +134,7 @@ namespace X_mas_game
                     Console.WriteLine("You need to make a player to do this");
 
                 }
-
+				// alliance request (targets one NPC) 
                 if (input.ToLower() == "request alliance" && playerIsActive)
                 {
 
@@ -174,7 +178,7 @@ namespace X_mas_game
                 {
                     Console.WriteLine("You need to make a player to do this");
                 }
-
+				// Moves the player to a location 
 				if(input.ToLower() == "move" && playerIsActive){
 					string xValue = null, yValue = null; 
 					byte xParse, yParse; 
@@ -211,6 +215,7 @@ namespace X_mas_game
                     Console.WriteLine("You need to add a player to do this.");
 
                 }
+				// print all known NPC statis
                 if (input.ToLower() == "print npc status")
                 {
 
@@ -224,7 +229,7 @@ namespace X_mas_game
   
 
                 }
-
+				// print curent player status
                 if (input.ToLower() == "print player status" && playerIsActive)
                 {
                     string infoToget = player.PlayerInfo;
@@ -234,7 +239,7 @@ namespace X_mas_game
                     Console.WriteLine("You need to add a player to do this.");
                 }
 
-
+				// shoot an NPC (Effect by name)
 				if(input.ToLower() == "shoot" && playerIsActive && badGuyCount > 0 && player.amunition > 0)
                 {
                     string nameToUse = null;
@@ -271,6 +276,7 @@ namespace X_mas_game
 
                     }
 
+					// prints out the shot responce 
 					if (ifIhitHim && badGuyAlive)
                     {
 
@@ -314,7 +320,7 @@ namespace X_mas_game
                     }
 
                 }
-
+				// added in extra help command
 				if (input.ToLower() == "help" ){
 					Console.WriteLine ("Welcome to the help Center.  \nBelow are a list of avalable commands and that they do. ");
 					Console.WriteLine ("");
@@ -336,6 +342,7 @@ namespace X_mas_game
 
 				}
 
+				// checks the game over State 
 				if (playerIsActive && badGuyCount > 0)
                 {
                     if (player.hp == 0 || npcPasafied == badGuys.Count)
@@ -345,6 +352,7 @@ namespace X_mas_game
                 }
             }
 
+			//prints the game over message to console 
             Console.WriteLine("Game over your score = " + player.hp);
 
 		
@@ -355,6 +363,7 @@ namespace X_mas_game
 
 		}
 
+		// was used to make an array form 1- a set number no longer required 
 		public static byte[] GridNumberAdd(byte gridSize){
 
 			byte[] gridReady = new byte[gridSize + 1];
@@ -369,6 +378,7 @@ namespace X_mas_game
 			return(gridReady);
 		}
 
+		// creates the player 
 		public static Player CreatePlayer(string name){
 
 			byte[] xandY = RandomNumberGen(2);
@@ -377,7 +387,7 @@ namespace X_mas_game
 
 			return(player);
 		}
-
+		// created the badguy
 		public static BadGuy CreateNPC(string name, string story){
 
 			byte[] xandY = RandomNumberGen(2);
@@ -386,7 +396,7 @@ namespace X_mas_game
 
 			return(badGuy);
 		}
-
+		// genarates random numbers in an array for posisions 
 		public static byte[] RandomNumberGen(byte numberOfNumberToReturn){
 
 			byte[] numbersToReturn = new byte[numberOfNumberToReturn];
@@ -399,6 +409,7 @@ namespace X_mas_game
 
 			return(numbersToReturn);
 		}
+		// genarates random number for the scelction of the storys for the background of the bad guys 
 		public static byte RandomNumberGen(){
 
 			byte numbersToReturn;

@@ -2,6 +2,7 @@
 
 namespace X_mas_game
 {
+	// a class acting as a custom mini libary 
 	public class Vector2Lyb
 	{
 		public Vector2Lyb()
