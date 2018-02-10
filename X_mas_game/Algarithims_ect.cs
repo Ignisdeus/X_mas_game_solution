@@ -2,7 +2,7 @@
 
 namespace X_mas_game
 {
-	// a class acting as a custom mini libary 
+	// a class acting as a custom mini libary I dont know if i done this right but i tryed :) 
 	public class Vector2Lyb
 	{
 		public Vector2Lyb()
@@ -26,7 +26,7 @@ namespace X_mas_game
 			hyp = (sideOne*sideOne)  + (sideTwo * sideTwo);
 
 			hyp = Math.Sqrt(hyp);
-			hyp= (int)Math.Floor(hyp);
+			hyp= (int)Math.Ceiling(hyp);
 
 			return((int)hyp);
 		}

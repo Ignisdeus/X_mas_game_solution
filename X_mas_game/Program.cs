@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections;
 
-struct Vector2{
+
+// This project was done by Michael Carstairs(C16707919)
+// Finished project will also be available on my git hub on and after date of submision. At present(29-11-2017) an amost finished version is accessable om my git hub. 
+// https://github.com/Ignisdeus/X_mas_game_solution
+// Happy Christmas :) hope you have fun :) 
+public struct Vector2{
 
 	public byte x; 
 	public byte y;
@@ -35,12 +40,15 @@ namespace X_mas_game
 			//Player player = new Player();
 			//player.CheckMyLoc();
 			// make bad guys apear and store them in a list 
-			ArrayList badGuys = new ArrayList();
+			ArrayList NPCs = new ArrayList();
 			ArrayList storys = new ArrayList();
+			ArrayList namesUsedBefore = new ArrayList();
+			byte npcPasafied = 0;
+
 			Player player = null; 
 			bool gameIsActive = true; 
 			bool playerIsActive = false;
-			byte badGuyCount = 0; 
+			byte NPCCount = 0; 
 			// storys for the NPC's back grounds stored in an array 
 			storys.Add("Eats the heads off bunny rabbits.  ");
 			storys.Add("Will kill his own grandmother for cash. ");
@@ -58,6 +66,17 @@ namespace X_mas_game
 
                 input = Console.ReadLine();
 
+
+				// reload wepion 
+				if (input.ToLower() == "reload" && playerIsActive) {
+
+					player.amunition = 10; 
+					Console.WriteLine ("You have reloaded your gun");
+				}else if(input.ToLower() == "reload" && !playerIsActive){
+
+					Console.WriteLine ("You need to create a player to reload");
+				}
+
                 // create player 
                 if (input.ToLower() == "create player") {
 
@@ -65,6 +84,7 @@ namespace X_mas_game
                         playerIsActive = true;
                         // give the player a name
                         string nameToUse = null;
+
                         Console.WriteLine("Please give your player a name");
                         nameToUse = Console.ReadLine();
 
@@ -73,10 +93,15 @@ namespace X_mas_game
                             Console.WriteLine("That is not a valid name. \nPlease try again.");
                             nameToUse = Console.ReadLine();
                         }
+						byte x = RandomNumberGen(100), y = RandomNumberGen(100); 
 
-                        player = CreatePlayer(nameToUse);
+						// to make the game less pridictable 
+						while(x ==y){
+							y = RandomNumberGen(100);
+						}
+						player = new Player(x  , y, nameToUse);
                         //player.CheckMyLoc();
-                        Console.WriteLine(player.name + "Has been created as the player");
+                        Console.WriteLine(player.name + " Has been created as the player");
 
                     } else {
 
@@ -87,21 +112,48 @@ namespace X_mas_game
 				// create npc 
                 if (input.ToLower() == "create npc") {
 
-                    if (badGuyCount < 5) {
-                        badGuyCount++;
+                    if (NPCCount < 5) {
+                        NPCCount++;
                         string nameToUse = null;
+						bool nameUsedBefore = false;
                         Console.WriteLine("Please give your NPC a name");
-                        nameToUse = Console.ReadLine();
 
+
+
+                        nameToUse = Console.ReadLine();
+						// reuse of names causes problims fixed by using loops
+						for(int i =0; i < namesUsedBefore.Count; i ++){
+
+							if(nameToUse.ToLower() == namesUsedBefore[i].ToString().ToLower()){
+								nameUsedBefore = true;
+							}
+
+						}
                         // if name is not enterd try again 
-                        while (string.IsNullOrEmpty(nameToUse)) {
+                        while (string.IsNullOrEmpty(nameToUse) || nameUsedBefore) {
                             Console.WriteLine("That is not a valid name. \nPlease try again.");
                             nameToUse = Console.ReadLine();
+							nameUsedBefore = false;
+							for(int i =0; i < namesUsedBefore.Count; i ++){
+
+								if(nameToUse.ToLower() == namesUsedBefore[i].ToString().ToLower()){
+									nameUsedBefore = true;
+								}
+
+							}
                         }
-                        byte storyPicker = RandomNumberGen();
+                        byte storyPicker = RandomNumberGen(3);
                         string storyToUse = storys[storyPicker].ToString();
-                        badGuys.Add(CreateNPC(nameToUse, storyToUse));
+						byte x = RandomNumberGen(100);
+						byte y= RandomNumberGen(100);
+						// to make the game less pridictable 
+						while(x ==y){
+							y = RandomNumberGen(100);
+						}
+						//Console.WriteLine (x +" , "+ y); was used for debugging :) 
+						NPCs.Add( new NPC (x , y , nameToUse, storyToUse));
 						Console.WriteLine (nameToUse + " Has been created");
+						namesUsedBefore.Add(nameToUse);
                     } else {
 
                         Console.WriteLine("Can not Create any more NPC");
@@ -120,8 +172,8 @@ namespace X_mas_game
                         nameToUse = Console.ReadLine();
                     }
 
-                    for (int i = 0; i < badGuys.Count; i++) {
-                        BadGuy c = (BadGuy)badGuys[i];
+                    for (int i = 0; i < NPCs.Count; i++) {
+                        NPC c = (NPC)NPCs[i];
                         if ((c.name).ToLower() == nameToUse.ToLower()) {
 
                             Console.WriteLine("Name: " + c.name + "\nBackStory: " + c.story);
@@ -149,28 +201,29 @@ namespace X_mas_game
                         nameToUse = Console.ReadLine();
                     }
 
-                    string allyStatus = null;
-                    for (int i = 0; i < badGuys.Count; i++)
-                    {
-                        BadGuy c = (BadGuy)badGuys[i];
+					//find npc with name
 
-                        if ((c.name).ToLower() == nameToUse.ToLower())
-                        {
+					NPC npcToAskAllianceWith = null; 
+					for(int i =0; i < NPCs.Count; i ++){
+						NPC nameFinder = (NPC)NPCs[i]; 
 
-                            allyStatus = c.myAligenes;
-                        }
+						if(nameFinder.name.ToLower() == nameToUse.ToLower()){
 
-                        if (allyStatus.ToLower() != "friend")
-                        {
-                            player.hp -= 2;
-                            Console.WriteLine("You lost 2 hp your hp is now = " + player.hp);
-                        }
-                        else {
+							npcToAskAllianceWith = nameFinder;
+							break;
+						}
 
-                            Console.WriteLine("You found a friend");
-                        }
+					}
+					if(npcToAskAllianceWith.myAligenes == "Friend"){
 
-                    }
+						npcPasafied++;
+						Console.WriteLine ("You found a friend");
+
+					}else{
+						player.hp -= 2; 
+						Console.WriteLine ("You Lost 2 HP");
+					}
+    
 
 
                    
@@ -219,9 +272,9 @@ namespace X_mas_game
                 if (input.ToLower() == "print npc status")
                 {
 
-                    for(int i =0; i < badGuys.Count; i++)
+                    for(int i =0; i < NPCs.Count; i++)
                     {
-                        BadGuy badinfoToCall = (BadGuy)badGuys[i];
+                        NPC badinfoToCall = (NPC)NPCs[i];
 
                         string infoToOutput = badinfoToCall.CallMyinfo();
                         Console.WriteLine(infoToOutput);
@@ -240,7 +293,7 @@ namespace X_mas_game
                 }
 
 				// shoot an NPC (Effect by name)
-				if(input.ToLower() == "shoot" && playerIsActive && badGuyCount > 0 && player.amunition > 0)
+				if(input.ToLower() == "shoot" && playerIsActive && NPCCount > 0 && player.amunition > 0)
                 {
                     string nameToUse = null;
                     Console.WriteLine("Please give the name of the NPC you would like to Shoot");
@@ -252,22 +305,23 @@ namespace X_mas_game
                         Console.WriteLine("That is not a valid name. \nPlease try again.");
                         nameToUse = Console.ReadLine();
                     }
-					bool ifIhitHim = false, badGuyAlive = true;
+					bool ifIhitHim = false, NPCAlive = true;
                     string eminyStatus = null; 
-                    for( int i = 0; i < badGuys.Count; i++)
+                    for( int i = 0; i < NPCs.Count; i++)
                     {
-                        BadGuy c = (BadGuy)badGuys[i];
+                        NPC c = (NPC)NPCs[i];
                         if ((c.name).ToLower() == nameToUse.ToLower())
                         {
 							if(c.hp <=0){
 
-								badGuyAlive = false;
+								NPCAlive = false;
 
 							}
-							if(badGuyAlive){
-							player.ShotMyGun();
+							if(NPCAlive){
+							player.ShotMyGun();// removes one bullet
                             ifIhitHim = c.Shoot();
                             eminyStatus = c.myType;
+								Console.WriteLine ("amunition - 1");
 							}else{
 								Console.WriteLine ("I cant do that they are all ready dead");
 							}
@@ -277,15 +331,15 @@ namespace X_mas_game
                     }
 
 					// prints out the shot responce 
-					if (ifIhitHim && badGuyAlive)
+					if (ifIhitHim && NPCAlive)
                     {
 
                         Console.WriteLine("You shot " + nameToUse);
 
                     }
-					else if( !ifIhitHim && badGuyAlive)
+					else if( !ifIhitHim && NPCAlive)
                     {
-                        Console.WriteLine("You are to far away " + nameToUse);
+                        Console.WriteLine("You are to far away and missed " + nameToUse);
                     }
                     if(eminyStatus.ToLower() == "friend")
                     {
@@ -294,24 +348,26 @@ namespace X_mas_game
                     }
 
                 }
-				else if (input.ToLower() == "shoot" && !playerIsActive && badGuyCount > 0 && player.amunition > 0) 
+				else if (input.ToLower() == "shoot" && !playerIsActive ) 
                 {
                     Console.WriteLine("You need to make a player frist");
 
-				}else if (input.ToLower() == "shoot" && !playerIsActive && badGuyCount <= 0 && player.amunition > 0)
+				}else if (input.ToLower() == "shoot" &&  NPCCount == 0 )
                 {
                     Console.WriteLine("There is no body to shoot");
-				}else if (input.ToLower() == "shoot" && playerIsActive && badGuyCount >= 0 && player.amunition <= 0)
+				}else if (input.ToLower() == "shoot"  && player.amunition <= 0)
 				{
 					Console.WriteLine("Im out of ammo");
 				}
 
-                byte npcPasafied = 0; 
 
-                for(int i = 0; i < badGuys.Count; i++)
+
+                
+
+                for(int i = 0; i < NPCs.Count; i++)
                 {
 
-                    BadGuy c = (BadGuy)badGuys[i];
+                    NPC c = (NPC)NPCs[i];
 
                     if( c.allyStatus == "friend" || c.hp <= 0)
                     {
@@ -343,9 +399,10 @@ namespace X_mas_game
 				}
 
 				// checks the game over State 
-				if (playerIsActive && badGuyCount > 0)
+				if (playerIsActive && NPCCount > 0)
                 {
-                    if (player.hp == 0 || npcPasafied == badGuys.Count)
+					// i would add a player hp <=0 but not stated in assignment brefe 
+                    if (npcPasafied == NPCs.Count)
                     {
                         gameIsActive = !gameIsActive;
                     }
@@ -359,7 +416,7 @@ namespace X_mas_game
 
 
 
-			//badGuys.Add(new BadGuy(x,y,name,story));
+			//NPCs.Add(new NPC(x,y,name,story));
 
 		}
 
@@ -378,44 +435,27 @@ namespace X_mas_game
 			return(gridReady);
 		}
 
-		// creates the player 
-		public static Player CreatePlayer(string name){
 
-			byte[] xandY = RandomNumberGen(2);
-
-			Player player = new Player(xandY[0],xandY[1], name);
-
-			return(player);
-		}
-		// created the badguy
-		public static BadGuy CreateNPC(string name, string story){
-
-			byte[] xandY = RandomNumberGen(2);
-
-			BadGuy badGuy = new BadGuy(xandY[0], xandY[1], name, story);
-
-			return(badGuy);
-		}
 		// genarates random numbers in an array for posisions 
-		public static byte[] RandomNumberGen(byte numberOfNumberToReturn){
+		//public static byte[] RandomNumberGen(byte numberOfNumberToReturn, byte maxNumber){
 
-			byte[] numbersToReturn = new byte[numberOfNumberToReturn];
+			//byte[] numbersToReturn = new byte[numberOfNumberToReturn];
 
-			Random rnd = new Random();
+			//Random rnd = new Random();
 
-			for( byte i = 0 ; i < numberOfNumberToReturn; i ++){
-				numbersToReturn[i] = (byte)rnd.Next(0,100);
-			}
+			//for( byte i = 0 ; i < numberOfNumberToReturn; i ++){
+				//numbersToReturn[i] = (byte)rnd.Next(0,maxNumber);
+			//}
 
-			return(numbersToReturn);
-		}
+			//return(numbersToReturn);
+		//}
 		// genarates random number for the scelction of the storys for the background of the bad guys 
-		public static byte RandomNumberGen(){
+		public static byte RandomNumberGen(byte maxNumber){
 
 			byte numbersToReturn;
 
 			Random rnd = new Random();
-			numbersToReturn = (byte)rnd.Next(0,4);
+			numbersToReturn = (byte)rnd.Next(0,maxNumber);
 
 		
 
